@@ -27,8 +27,13 @@ public class GetIdsRequest {
         /** 实体维度：0(点), 1(线/边), 2(面), 3(体)。若不传则由业务逻辑推断 */
         private Integer entityDim;  
         
+        /** X 轴坐标 */
         private Double x;
+
+        /** Y 轴坐标 */
         private Double y;
+
+        /** Z 轴坐标 */
         private Double z;
         
         /** 空间搜索的容差范围 (默认如 0.00001) */
