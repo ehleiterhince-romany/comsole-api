@@ -1,1 +1,0 @@
-java "-Dloader.path=BOOT-INF/classes,BOOT-INF/lib,D:\Program Files\COMSOL\COMSOL63\Multiphysics\plugins" -jar .\comsol-api-0.0.1-SNAPSHOT.jar
