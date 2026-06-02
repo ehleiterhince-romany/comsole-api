@@ -41,6 +41,10 @@ public class GenericSimulationService {
     /**
      * 辅助接口：根据空间三维坐标点获取对应的几何实体 ID。
      * (用于前端校验拾取坐标是否合法)
+     *
+     * @param request 包含坐标点和模型路径的请求对象
+     * @return 包含坐标名称与对应的几何实体 ID 数组的映射
+     * @throws Exception 当 COMSOL 模型初始化或坐标解析过程中发生异常时抛出
      */
     public Map<String, int[]> getIdsByCoordinates(GetIdsRequest request) throws Exception {
         System.setProperty("cs.comsoldir", comsolBaseUrl);
@@ -85,6 +89,10 @@ public class GenericSimulationService {
 
     /**
      * 核心业务接口：执行一站式动态多物理场仿真任务 (内嵌模型校验与多维数据导出)
+     *
+     * @param request 包含所有仿真配置参数的请求对象
+     * @return 仿真执行结果的详细信息字符串，包含生成的各种结果文件路径和图表数据
+     * @throws Exception 当仿真设置或执行过程中发生异常时抛出
      */
     public String runGenericTask(GenericSimulationRequest request) throws Exception {
 
@@ -588,6 +596,10 @@ public class GenericSimulationService {
 
     /**
      * 极速网格生成专用引擎 (用于前端秒级预览)
+     *
+     * @param request 包含网格配置参数的仿真请求对象
+     * @return 生成网格文件的详细路径信息字符串
+     * @throws Exception 当网格生成过程中发生异常时抛出
      */
     public String generateMeshOnly(GenericSimulationRequest request) throws Exception {
         System.setProperty("cs.comsoldir", comsolBaseUrl);
@@ -645,6 +657,11 @@ public class GenericSimulationService {
 
     /**
      * 辅助方法：构建坐标选取器
+     *
+     * @param pt   通用的坐标选择器定义对象
+     * @param name 自定义选择器的标识名称
+     * @param dim  选择器目标实体维度
+     * @return 转换为内部坐标获取请求格式的坐标选择器对象
      */
     private GetIdsRequest.PointSelectDef buildIdPoint(GenericSimulationRequest.PointSelectDef pt, String name, Integer dim) {
         GetIdsRequest.PointSelectDef idPt = new GetIdsRequest.PointSelectDef();
@@ -657,6 +674,12 @@ public class GenericSimulationService {
 
     /**
      * 辅助方法：合并隐式声明的 ID 和坐标命中的 ID
+     *
+     * @param explicitIds 显式指定的实体 ID 数组
+     * @param pts         通过坐标获取的实体点集列表
+     * @param prefix      内部标识前缀，用于在全局 ID 映射中查找命中 ID
+     * @param globalIdMap 全局命中实体 ID 的映射缓存字典
+     * @return 合并后去重的最终实体 ID 数组
      */
     private int[] resolveIds(int[] explicitIds, List<GenericSimulationRequest.PointSelectDef> pts, String prefix, Map<String, int[]> globalIdMap) {
         Set<Integer> finalIds = new HashSet<>();
@@ -672,6 +695,9 @@ public class GenericSimulationService {
 
     /**
      * 辅助方法：API 属性命名映射
+     *
+     * @param k 属性的简写或常用键名
+     * @return COMSOL 内部模型使用的标准属性键名
      */
     private static String getKey(String k) {
         switch (k.toLowerCase()) {
